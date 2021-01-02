@@ -12,13 +12,13 @@
 
 theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "aqua" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "air" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
 title                    : "Phuong's blog"
 title_separator          : "-"
-subtitle                 : "Webcome to Phuong's blog!"
+subtitle                 : "Webcome to my personal tech posts!"
 name                     : "Phuong Le (Phoebe)"
 description              : "Thank you for your visit and please feel free to contact with me in any further discussion on our shared interests."
 url                      : "https://phuongle.github.io/"
@@ -95,7 +95,7 @@ analytics:
 author:
   name             : "Phuong Le (Phoebe)"
   avatar           : "/assets/images/profile-pic/phuongle.jpg"
-  bio              : "Mom.Wife.Dev"
+  bio              : "Mom.Wife.Dev."
   location         : "Canada"
   email            :
   links:
