@@ -1,0 +1,125 @@
+---
+tags:
+    - deep-q-learning
+    - machine-learning
+    - neural-network
+    - backpropagation
+
+classes: wide
+---
+
+<html>
+    <head>
+        <script>
+        </script>
+        <style>
+            table {
+              font-family: arial, sans-serif;
+              border-collapse: collapse;
+              width: 100%;
+            }
+            
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: left;
+              padding: 8px;
+            }
+            
+            tr:nth-child(even) {
+              background-color: #dddddd;
+            }
+            </style>
+    </head>
+<body>
+    <p style="text-align:justify">
+        As part of my article about <a href="http://google.com">How to implement Deep Reinforcement Learning to build a robot tank?"</a>, 
+        this post is written to describe how the Backpropagation (BP) algorithm works since it will be used to implement 
+        the Function Approximation on the Deep Q-Learning. This article will only discuss about the implementation aspects, 
+        so it is recommended to read the the neural-network fundamentals in advance, e.g. the classical book "Fundamentals of Neural Networks" of Laurene Fausett. 
+    </p>
+    <p style="text-align:justify">
+    There will be three sections
+    <ul>
+        <li  style="text-align:justify">
+        Section 1: High level discussion about the backpropagation neural-network with one hidden layer.
+        </li>
+        <li>
+        Section 2: A hand-on example to perform the BP algorithm with XOR presentation.
+        </li>
+        <li>
+        Section 3: A tool for fine-tuning the hyper-parameters of a neural-network.     
+        </li>
+    </ul>
+    </p>
+    <p style="text-align:justify">       
+        Source code: <a href="https://github.com/PhuongLe/deep-q-learning-robot/blob/master/src/main/java/backpropagation/BackpropagationBaseNetwork.java">backpropagation neural-network implementation</a>.
+    </p>
+
+    <h2>Error Backpropagation algorithm</h2>
+    <p style="text-align:justify">       
+        My implementation supported to perform backpropagation algorithm for a single hidden layer neural-network, which is adequate for a large number of applications. 
+    The picture below depicts an example of the network with multiple inputs, 1 hidden layers with multiple neurons, and multiple outputs.
+    </p>
+    
+    [TODO]
+
+    <h3>Bias vs weights</h3>
+    <h3>Activation functions</h3>
+    
+    <h2>An example with XOR presentation</h2>
+    <p style="text-align:justify">Using the implementation above, this section is to provide a specific example with pipolar XOR presentation, in whih the data training set is as below</p> 
+        <div style="align-content:center">
+            <table>
+                <tr>
+                <th>Input  X0</th>
+                <th>Input   X1</th>
+                <th>Output  T</th>
+                </tr>
+                <tr>
+                <td>-1</td>
+                <td>-1</td>
+                <td>-1</td>
+                </tr>
+                <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>1</td>
+                </tr>
+                <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>1</td>
+                </tr>
+                <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>-1</td>
+                </tr>
+            </table>
+        </div>
+    <p style="text-align:justify">The image below illustrates the architecture of the network used in this case, as such it has 2 inputs, 1 output, and 4 hidden neurons</p>
+   
+    [TODO]
+
+    <p style="text-align:justify">If you feel interested, I am also glad to share how compute all the numbers above on this <a href="">excel file</a></p>
+
+    <h2>Fine-turning hyper-parameters tool</h2>
+
+    <p style="text-align:justify">The <a href="https://github.com/PhuongLe/deep-q-learning-robot/blob/master/src/test/java/backpropagation/XorNeuralNetRunner.java">XORNeuralNetRunner</a> is written to test the XOR presentation's neural network in a number of trials until it reaches the limit or the convergence.
+    This runner allows to initialize different hyper-parameters for the neural-network as well as the target error of the training. On each test, the runner will perform a given number of trials, whereas on each trial,
+    it will perform backpropagation to fine-tune the weights until it reach the target error or it reach the limit of epochs. The hyper-parameters that are allowed to adjust are listed below
+        <ul>
+            <li>Number of hidden neurons</li>
+            <li>Activation-function used on hidden and output layers</li>
+            <li>Target error</li>
+            <li>Learning rate</li>
+            <li>Momentum term</li>
+            <li>Weights</li>
+        </ul>
+    </p>
+    <p>On each trial that reaches the convergence, it will save all the error on every epochs. It would help to draw a graph of total error against number of epochs as an example below</p>
+    <p align="center">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/errors-epochs.png" width="650" alt=""/>
+     </p>
+</body>
+</html>

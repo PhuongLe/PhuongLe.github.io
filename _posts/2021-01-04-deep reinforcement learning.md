@@ -10,7 +10,7 @@ toc_label: "Reinforcement Learning"
 toc_icon: "heart" 
 
 ---
-This article aims to describe how to implement a Reinforcement Learning (RL) using Approximation Q-Function with a Neural Network (NN) through an example of building a robot tank on Robocode platform. 
+This article aims to describe how to implement a Deep Reinforcement Learning (RL) using Approximation Q-Function with a Neural Network (NN) through an example of building a robot tank on Robocode platform. 
 Source code can be found at [https://github.com/PhuongLe/DeepQLearningRobot/](https://github.com/PhuongLe/DeepQLearningRobot). 
 
 ## Approach
@@ -24,7 +24,7 @@ The implementation has three primary stages
 
     I use a NN having multiple inputs as the state-action spaces and single output as the Q-value. I plan to improve the source code to support a different architecture that has multiple inputs and multiple outputs, in which the inputs are the states space while the outputs are the pairs of {action, Q-value}. I expect that it would reduce the computing time when exploring the best action based on the states space.
 
-1. Implement RL using Q-Function approximation with the pre-trained NN above.
+1. Implement Deep RL using Q-Function approximation with the pre-trained NN above.
 
     After having a RL implementation with Q-Learning algorithm, this step is a transision step to replace the look-up table with an approximate function thich is a NN. The RL with Q-Function as a NN is also called as Deep RL with Deep Q-Learning. The reason we should try to avoid using look-up table is because saving all state-action spaces requires a huge memory and data processing time, leading to be unrealistic for an environment that has a large state-action space.
 
