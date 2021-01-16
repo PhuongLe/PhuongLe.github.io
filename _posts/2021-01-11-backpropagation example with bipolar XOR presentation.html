@@ -1,0 +1,176 @@
+---
+tags:
+    - deep-q-learning
+    - machine-learning
+    - neural-network
+    - backpropagation
+
+classes: wide
+---
+
+<html>
+    <head>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <style>
+            table {
+              font-family: arial, sans-serif;
+              border-collapse: collapse;
+              width: 100%;
+            }
+            
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: left;
+              padding: 8px;
+            }
+            
+            tr:nth-child(even) {
+              background-color: #dddddd;
+            }
+            </style>
+    </head>
+<body>
+    <p style="text-align:justify">
+        To have a better understanding how to apply backpropagation algorithm, this article is written to illustrate how to train a single hidden-layer
+         using backpropagation algorithm with bipolar XOR presentation.
+        It is just simply an example for my previous post about <a href="/2021/01/backpropagation-neural-network.html">backpropagation neural network</a>.
+    </p>
+    
+    <h2>The neural nework architecture</h2>
+    <p style="text-align:justify">
+    The neural network using in this example has 2 inputs, 1 hidden layer with 4 neurons and 1 output, in which, the bipolar XOR training data set looks like below
+        <div style="align-content:center">
+            <table>
+                <tr>
+                <th>Input  X0</th>
+                <th>Input   X1</th>
+                <th>Output  Y</th>
+                </tr>
+                <tr>
+                <td>-1</td>
+                <td>-1</td>
+                <td>-1</td>
+                </tr>
+                <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>1</td>
+                </tr>
+                <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>1</td>
+                </tr>
+                <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>-1</td>
+                </tr>
+            </table>
+        </div>
+    </p>
+    <p style="text-align:justify">The neural network's architecture is illustrated in the following image</p>
+    <p style="text-align: center;">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/XOR-nn.png" alt=""/>
+        <br/>
+        Figure 1: neural-network framework for XOR presentation
+    </p>
+
+    <h2>Error backpropagation algorithm</h2>
+    <p style="text-align:justify">
+        In this example, given a neural network with predefined hyper-parameters, weights, and delta weights, I will demonstrate how to
+         perform step by step one full feedforward and backward propagation a specific pair of inputs {-1, -1}, and its expected output {-1} 
+         to adjust weights.          
+    </p>
+    
+    <h3>Neural network's predefined values</h3>
+    <span>Predefined hyper-parameters</span>
+    <p style="text-align: left;">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/xor-hyperparameters.png" alt=""/>
+    </p>
+    <span>Predefined current weights and delta weights from hidden neurons and output bias to output</span>
+    <p style="text-align: left;">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/xor-outputweights.png" alt=""/>
+    </p>
+
+<span>Predefined current weights and delta weights from inputs and hidden bias to hidden neurons</span>
+    <p style="text-align: left;">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/xor-hiddenweights.png" alt=""/>
+    </p>
+
+    With given above values, it is ready to perform the feedforward round to compute error on the output as demonstrated on the next section.
+
+    <h3>Feedforward propagation</h3>
+    Using steps described on previous post about <a href="/2021/01/backpropagation neural network.html">backpropagation neural network</a>,
+     I have following computations.
+     <br/>
+    <span>F1+F2: Input and output signals on each hidden neuron</span>
+     <p style="text-align: left;">
+         <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/xor-hidden-signals.png" alt=""/>
+     </p>
+    <span>F3+F4: Input and output signals on output</span>
+     <p style="text-align: left;">
+         <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/xor-output-signals.png" alt=""/>
+     </p>
+    <span>F5: Error on the output</span>
+     <p style="color: red;">Error = T - YO = -1.190506994</p>
+
+     With the error found on the output, it will be backward propagated to adjust the weights, as demonstrated on the next section.
+     
+    <h3>Error backward propagation</h3>
+    <span>B1: Error signal term δ of output SO</span>
+    <p style="text-align: left;">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/XOR-B1.png" alt=""/>
+    </p>
+
+    <span>B2.1 + B2.2: New weight correction terms and updated weights of each hidden neuron and output bias to the output</span>
+    <p style="text-align: left;">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/XOR-B2.png" alt=""/>
+    </p>
+
+    <span>B3+B4: Given that the error at each hidden neuron is δ*WO<sub>i</sub>, the error signal term δ of each hidden neuron is computed as below</span>
+    <p style="text-align: left;">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/XOR-B3.png" alt=""/>
+    </p>
+    <span>B5.1 + B5.2: New weight correction terms and updated weights of each input and hidden bias to each hidden neuron</span>
+    <p style="text-align: left;">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/XOR-B5.png" alt=""/>
+    </p>
+    <p style="text-align:justify">       
+
+    This procedure of the above feedforward and backward propagation will be repeated on each pair of inputs vector and its expected output. 
+    All the error found of each pattern will be summed up with the following formula to compute the final error of each iteration (aka, each epoch).
+    \[
+    E = \frac{1}{2}*\sum_{k=0}^m (T_k - YO_k)^2
+    \]
+
+    If this error is less than target error, this training is done. In other words, it reaches the convergence. Otherwise, the round of feedforward and error backward propagation
+     will be repeated until it reaches the convergence or the number of iterations is over the limit, which is preconfigured as 20.000 on my implementation.
+</p>
+    <br/><br/>
+    <p style="text-align:justify;font-style: italic">
+        <u>Data source: <br/></u>
+        If you feel interested, I am also glad to share how compute all the numbers above on this <a href="../../../assets/data/Backpropagation example.xlsx">excel file</a>
+    </p>
+
+    <h2>Fine-turning hyper-parameters tool</h2>
+
+    <p style="text-align:justify">The <a href="https://github.com/PhuongLe/deep-q-learning-robot/blob/master/src/test/java/backpropagation/XorNeuralNetRunner.java">XORNeuralNetRunner</a> is written to test the XOR presentation's neural network in a number of trials until it reaches the limit or the convergence.
+    This runner allows initializing different hyper-parameters for the neural-network as well as the target error of the training. On each test, the runner will perform a given number of trials, whereas on each trial,
+    it will perform backpropagation to fine-tune the weights until it reach the target error or it reaches the limit of epochs. The hyper-parameters that are allowed to adjust are listed below
+        <ul>
+            <li>Number of hidden neurons</li>
+            <li>Activation-function used on hidden and output layers</li>
+            <li>Target error</li>
+            <li>Learning rate</li>
+            <li>Momentum term</li>
+            <li>Weights</li>
+        </ul>
+    </p>
+    <p style="text-align:justify">On each trial that reaches the convergence, it will save all the errors on every epoch to help draw a graph of total error against number of epochs as an example below</p>
+    <p style="align-content:center">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/errors-epochs.png" width="650" alt=""/>
+     </p>
+</body>
+</html>

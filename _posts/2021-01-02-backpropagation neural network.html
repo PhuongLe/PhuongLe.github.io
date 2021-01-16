@@ -10,8 +10,13 @@ classes: wide
 
 <html>
     <head>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
         <script>
+        MathJax = {
+            tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+        };
         </script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
         <style>
             table {
               font-family: arial, sans-serif;
@@ -32,94 +37,233 @@ classes: wide
     </head>
 <body>
     <p style="text-align:justify">
-        As part of my article about <a href="https://phuongle.github.io/2021/01/deep-reinforcement-learning.html">How to implement Deep Reinforcement Learning to build a robot tank?"</a>, 
+        As part of my article about <a href="https://phuongle.github.io/2021/01/deep-reinforcement-learning.html">How to implement Deep Reinforcement Learning 
+        to build a robot tank?"</a>, 
         this post is written to describe how the Backpropagation (BP) algorithm works since it will be used to implement 
-        the Function Approximation on the Deep Q-Learning. This article will only discuss about the implementation aspects, 
-        so it is recommended to read the the neural-network fundamentals in advance, e.g. the classical book "Fundamentals of Neural Networks" of Laurene Fausett. 
+        the Function Approximation on the Deep Q-Learning. This article will only discuss the implementation aspects, 
+        so it is recommended to read the neural-network fundamentals in advance, e.g. the classical book "Fundamentals of Neural Networks" by Laurene Fausett.  
     </p>
+
+    <p style="text-align:justify">       
+        Source code: <a href="https://github.com/PhuongLe/deep-q-learning-robot/blob/master/src/main/java/backpropagation/BackpropagationBaseNetwork.java">backpropagation
+         neural-network implementation</a>. 
+    </p>
+
+    <h2>Neural network architecture</h2>
     <p style="text-align:justify">
-    There will be three sections
+        This implementation supported the backpropagation algorithm for a single hidden layer neural-network, in which it has one multiple-input layer, 
+        one hidden layer with multiple neurons, and one multiple-output layer as illustrated on the following image. This architecture is adequate for a large number of applications.
+    </p>
+    <p style="text-align: center;">
+        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/nn-multi.png" alt=""/>
+        <br/>
+        Figure 1: Single hidden layer neural-network framework
+    </p>
+
+    <h3>Bias vs weights</h3>
+    <p style="text-align:justify">
+        There is bias (value 1) on each hidden and output layer as depicted in the above image.
+         The weights of those bias are variant and will also be adjusted during the training, just the same as how the other weights are updated during the training. 
+    </p>
+    
+    <h3>Activation function</h3>
+    <p style="text-align: justify;">
+    The activation function used on each hidden layer and output layer can vary in each specific situation. 
+    I have supported 3 activation functions including TanH, Relu, Sigmoid. There is no evidence that we should use the same activation function for all layers, 
+    but for ease of implementation, I use the same activation function for all layers, and the default one is the generic binary or bipolar Sigmoid function.
+    </p>
+    <h3>Neural network's primary hyper-parameters</h3>
+    <p style="text-align: justify;">
+        The neural-network is implemented in class "BackpropagationBaseNetwork.java" which is specified by following hyper-parameters
     <ul>
-        <li  style="text-align:justify">
-        Section 1: High level discussion about the backpropagation neural-network with one hidden layer.
+        <li>
+        Number of inputs: as in the above image, there are (n + 1) input training vectors from {X<sub>0</sub>, ..., X<sub>i</sub> to X<sub>n</sub>.
         </li>
         <li>
-        Section 2: A hand-on example to perform the BP algorithm with XOR presentation.
+            Number of hidden neurons: as in the above image, there are (p + 1) neurons on the hidden layer.
         </li>
         <li>
-        Section 3: A tool for fine-tuning the hyper-parameters of a neural-network.     
+            Number of outputs: as in the above image, there are (m + 1) output target vectors from 0 {T<sub>0</sub>, ..., T<sub>i</sub> to T<sub>m</sub>.
+        </li>
+        <li>
+            Learning rate (α).
+        </li>
+        <li>
+            Momentum tum (ρ):  a variant of the stochastic gradient descent.  
+        </li>
+        <li>
+            argA: the lower pound of Sigmoid activation function used by both hidden and output layer.
+        </li>
+        <li>
+            argB: the upper pound of Sigmoid activation function used by both hidden and output layer.
         </li>
     </ul>
     </p>
-    <p style="text-align:justify">       
-        Source code: <a href="https://github.com/PhuongLe/deep-q-learning-robot/blob/master/src/main/java/backpropagation/BackpropagationBaseNetwork.java">backpropagation neural-network implementation</a>.
+    <p style="text-align: justify;">
+    <u>Notes</u>
+    <br/>
+        If the Sigmoid activation function is used (by default), we will have the activation function and derivative of the activation function as below
+        \[
+        f(x) = \frac{(argB - argA)} {1+e^{-x} } + argA
+        \]
+        \[
+        f'(x) = \frac{1}{(argB - argA)} * (y - argA) * (argB - y)
+        \]
     </p>
 
     <h2>Error Backpropagation algorithm</h2>
     <p style="text-align:justify">       
-        My implementation supported to perform backpropagation algorithm for a single hidden layer neural-network, which is adequate for a large number of applications. 
-    The picture below depicts an example of the network with multiple inputs, 1 hidden layers with multiple neurons, and multiple outputs.
+        Error Backpropagation is the key and the most popular technique of training a neural network. This algorithm is simply a gradient descent method to fine-tune the weights 
+    by minimizing the total mean squared error (aka the loss) of the outputs computed by the network on each iteration 
+    (in the scope of this post, it is the same as each epoch).  
     </p>
-    
-    [TODO]
-
-    <h3>Bias vs weights</h3>
-    <h3>Activation functions</h3>
-    
-    <h2>An example with XOR presentation</h2>
-    <p style="text-align:justify">Using the implementation above, this section is to provide a specific example with pipolar XOR presentation, in whih the data training set is as below</p> 
-        <div style="align-content:center">
-            <table>
-                <tr>
-                <th>Input  X0</th>
-                <th>Input   X1</th>
-                <th>Output  T</th>
-                </tr>
-                <tr>
-                <td>-1</td>
-                <td>-1</td>
-                <td>-1</td>
-                </tr>
-                <tr>
-                <td>-1</td>
-                <td>1</td>
-                <td>1</td>
-                </tr>
-                <tr>
-                <td>1</td>
-                <td>-1</td>
-                <td>1</td>
-                </tr>
-                <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>-1</td>
-                </tr>
-            </table>
-        </div>
-    <p style="text-align:justify">The image below illustrates the architecture of the network used in this case, as such it has 2 inputs, 1 output, and 4 hidden neurons</p>
-   
-    [TODO]
-
-    <p style="text-align:justify">If you feel interested, I am also glad to share how compute all the numbers above on this <a href="../../../assets/data/Backpropagation example.xlsx">excel file</a></p>
-
-    <h2>Fine-turning hyper-parameters tool</h2>
-
-    <p style="text-align:justify">The <a href="https://github.com/PhuongLe/deep-q-learning-robot/blob/master/src/test/java/backpropagation/XorNeuralNetRunner.java">XORNeuralNetRunner</a> is written to test the XOR presentation's neural network in a number of trials until it reaches the limit or the convergence.
-    This runner allows to initialize different hyper-parameters for the neural-network as well as the target error of the training. On each test, the runner will perform a given number of trials, whereas on each trial,
-    it will perform backpropagation to fine-tune the weights until it reach the target error or it reach the limit of epochs. The hyper-parameters that are allowed to adjust are listed below
+    <p style="text-align:justify">       
+    A full training process for a neural-network is divided into 3 steps.
         <ul>
-            <li>Number of hidden neurons</li>
-            <li>Activation-function used on hidden and output layers</li>
-            <li>Target error</li>
-            <li>Learning rate</li>
-            <li>Momentum term</li>
-            <li>Weights</li>
+            <li>Step 1: Initialize weights</li>
+            <li>Step 2: for each pattern, perform training with the backpropagation algorithm</li>
+            <li>Step 3: Recompute the loss (e.g. the root mean square, RMS). If it reaches the target error, then stop. Otherwise, turn back to step 2 </li>
+        </ul>
+        Basically, training a network by backpropagation algorithm on each pattern on step 2 involves three stages
+        <ul>
+            <li>Step 2.1: Perform feedforward of the inputs training pattern (inputs vector \(X_i\)) </li>
+            <li>Step 2.2: Perform backward propagation of the associated error (loss) on each output </li>
+            <li>Step 2.3: Adjust the weights based on each computed error above</li>
+        </ul>
+        In the rest of this section, I will demonstrate how to perform all the above steps for a neural-network of n inputs, p hidden neurons, and m outputs. Additionally,
+         the bias on the hidden layer is treated as another input with a value of 1, so there will be (n+1) inputs. Likewise, the bias on the output layer is put on as the hidden neuron (p+1). 
+    </p>
+    <h3>Step 1: Initial weights</h3>
+    <p style="text-align:justify">       
+    On my implementation, all weights are initialized with random values from [-0.5, 0.5].
+    </p>
+    <h3>Step 2.1: Feedforward propagation</h3>
+    <p style="text-align:justify">       
+        The feedforward propagation is a process to compute the error (aka, the loss) on each output from an input vector. 
+        As illustrated in the above image, feedforward propagation has the following steps
+        <ul>
+            <li>
+                F1: For each inputs vector, calculate the value of each hidden neuron S<sub>j</sub> by the following formula 
+                    \[
+                    S_j = W_(n+1)j + \sum_{i=0}^n W_{ij}*X_i 
+                    \]
+            </li>
+            <li>
+                F2: For each hidden neuron S<sub>j<sub>, apply the activation function to compute its output signal Y<sub>j</sub> by the following formula 
+                    \[
+                    Y_j = f(S_j)
+                    \]
+            </li>
+            <li>
+                F3: After getting output signals for all hidden neurons, calculate the value of each output neuron SO<sub>k</sub> by the following formula 
+                \[
+                SO_k = W_(p+1)k + \sum_{j=0}^p W_{jk}*Y_k 
+                \]
+            </li>
+            <li>
+                F4: For each output SO<sub>k</sub>, apply the activation function to compute its output signal YO<sub>k</sub> by the following formula 
+                    \[
+                    YO_k = f(SO_k)  
+                    \]
+            </li>
+            <li>
+                F5: Compute error EO<sub>k</sub> (aka, loss) on each output by the following formula 
+                    \[
+                    EO_k = T_k - YO_k  
+                    \]
+            </li>
         </ul>
     </p>
-    <p>On each trial that reaches the convergence, it will save all the error on every epochs. It would help to draw a graph of total error against number of epochs as an example below</p>
-    <p align="center">
-        <img src="../../../assets/images/machine-learning/reinforcement-learning-robocode/errors-epochs.png" width="650" alt=""/>
-     </p>
+
+    <h3>Step 2.2 & 2.3: Backpropagation and weights update</h3>
+    <p style="text-align:justify">       
+        The backpropagation is actually a process to propagate the error back to each hidden neuron to adjust the weights. 
+        As illustrated in the above image, backward propagation has the following steps
+        <ul>
+            <li>
+                B1: For each error EO<sub>k</sub>, calculate the error signal term δ of SO<sub>k</sub> by the following formula 
+                    \[
+                    δSO_k = EO_k*f'(YO_k) 
+                    \]
+            </li>
+            <li>
+                B2.1: For each error signal term δSO<sub>k</sub>, calculate the new weights correction term ΔWO'<sub>jk</sub> of that output SO<sub>k</sub> to each hidden neuron Y<sub>j</sub> by the following formula                 
+                \[
+                    ΔWO'_{jk} = ρ*ΔWO_{jk} + α*δSO_k*Y_j
+                    \]
+
+                    <i>(Notice that, ΔWO'_jk is the new weight correction term which is derived from the error signal 
+                and a portion (momentum term ρ) of its previous weight correction term ΔWO<sub>jk</sub>.)</i>
+                <br/>
+                <br/>
+                This delta ΔWO'<sub>jk</sub> will be used to adjust the corresponding WO<sub>jk</sub>, so the new weight is calculated by the following formula
+                \[
+                    WO'_{jk} = WO_{jk} + ΔWO'_{jk} 
+                    \]
+
+            </li>
+            <li>
+                B2.2: Similarly, calculate the new bias correction term ΔWO'<sub>(p+1)k</sub> of that output SO<sub>k</sub> to each hidden neuron Y<sub>j</sub> by the following formula 
+                \[
+                    ΔWO’_{(p+1)k} = ρ*ΔWO_{(p+1)k} + α*δSO_k*1
+                    WO'_{(p+1)k} = WO_{(p+1)k} + ΔWO’_{(p+1)k}
+                \]
+            </li>
+            <li>
+                B3: After having all the weights to the output layer updated, calculate the new  error at each hidden neuron E<sub>j</sub> by the following formula 
+                    \[
+                    E_j = \sum_{k=0}^m W_{kj}*δSO_k 
+                    \]
+            </li>
+            <li>
+                B4: Calculate the error signal term δ of each hidden neuron S<sub>j</sub> by the following formula 
+                    \[
+                    δS_j = E_j*f'(Y_j) 
+                    \]
+            </li>
+            <li>
+                B5.1: For each error signal term δS<sub>j</sub>, calculate the new weights correction term ΔW'<sub>ij</sub> of that neuron S<sub>j</sub> to each input X<sub>i</sub> by the following formula                 
+                \[
+                    ΔW'_{ij} = ρ*ΔW_{ij} + α*δS_j*X_i
+                    \]
+
+                <i>(Notice that, ΔW'_ij is the new weight correction term which is derived from the error signal 
+                and a portion (momentum term ρ) of its previous weight correction term ΔW<sub>ij</sub>.)</i>
+                <br/>
+                <br/>
+                This delta ΔW'<sub>ij</sub> will be used to adjust the corresponding W<sub>ij</sub>, so the new weight is calculated by the following formula
+                \[
+                    W'_{ij} = W_{ij} + ΔW'_{ij} 
+                    \]
+
+            </li>
+            <li>
+                B5.2: Similarly, calculate  the new bias correction term ΔW'<sub>(n+1)j</sub> of that neuron S<sub>j</sub> to each input X<sub>i</sub> by the following formula 
+                \[
+                    ΔW’_{(n+1)j} = ρ*ΔW_{(n+1)j} + α*δS_j*1
+                    W'_{(n+1)j} = W_{(n+1)j} + ΔW’_{(n+1)j}
+                \]
+            </li>
+        </ul>
+    </p>
+
+
+    <h3>Step 3: Computed error of one inputs vector</h3>
+    <p style="text-align:justify">       
+        There would be different approaches to compute the error corresponding to each input vector. On my implementation, I used the following formulation
+                \[
+        E = \frac{1}{2}*\sum_{k=0}^m (T_k - YO_k)^2
+        \]
+    </p>
+
+    <p>
+        The training will be iterated until it reaches the convergence (aka, getting to target error) or until it is over the maximum number of iterations.
+    </p>
+    <p>
+        <i><u>An example with XOR presentation</u></i>
+        <br/>
+        To elaborate the algorithm in practice, I demonstrated how it works with bipolar XOR presentation on the post
+         <a href="/2021/01/backpropagation-example-with-bipolar-XOR-presentation.html">an example of backpropagation with bipolar XOR presentation</a> 
+    </p>
 </body>
 </html>
