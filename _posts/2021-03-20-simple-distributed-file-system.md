@@ -1,5 +1,3 @@
-# Simple distributed file system
-
 Thank a UBC project, and we have tried to develop a distributed file system that helped me have a deep understanding of the fundamentals of a distributed system. Although it is just a small project,
  we have put a lot of effort into keeping the architecture simple and elegant and applied optimizations wherever possible (e.g., caching) with end-to-end automation tests. 
 
