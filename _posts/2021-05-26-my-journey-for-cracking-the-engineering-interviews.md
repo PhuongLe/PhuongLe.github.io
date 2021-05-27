@@ -7,7 +7,9 @@ classes: wide
 ---
 
 
-I had a CS background, several years working on both engineering and management roles back in my home country, Vietnam, before taking my master's degree in applied science at UBC, Canada. After finishing my study and weighing up and down my strengths, weaknesses, as well as my own passion thoroughly, I decided to target applying to big tech companies as a senior software engineer (frankly speaking, it’s just the starting point for an experienced developer). That’s when I started my journey to prepare for cracking the technical interview.
+I had a CS background, several years working on both engineering and management roles back in my home country, Vietnam, before taking my master's degree in applied science at UBC, Canada. After finishing my study and weighing up and down my strengths, weaknesses, as well as my own passion thoroughly, I decided to target applying to big tech companies as a senior software engineer. That’s when I started my journey to prepare for cracking the technical interview.
+
+Talking about big tech companies, I meant those with a large business scale with more than thousands of employees, not only massive tech companies such as Big 4 or 5. Thankfully, they all have similar hiring processes and coding challenges.
 
 With that in mind, I spent 2 weeks on Google “how to crack the technical interview” to get inspired and collect resources that worked best for my time. There are tons of useful posts, and even there are fruitful guidelines from the companies themselves. Below are my most favorite references.
 - **John Washam** - ["why I studied full-time for 8 months for a Google interview"](https://www.freecodecamp.org/news/why-i-studied-full-time-for-8-months-for-a-google-interview-cc662ce9bb13/): His incredible effort on getting out of the comfort zone to pursue his dream  job at his age inspired me a lot.
@@ -53,10 +55,10 @@ I studied those following DS in order of priority as below.
 - **Tree, Graph**: I saw it on coding assignments of all companies I applied to.
 - **Bit, linked list, LinkedHashMap, Heap**
 
-It is important to understand the time/space complexity of its basic operations (CRUD). In addition, it is great to dive into the advantages/disadvantages of its implementation. For example, to implement a stack on Java, should we use [Stack or ArrayDeque](https://stackoverflow.com/questions/12524826/why-should-i-use-deque-over-stack)?
+It is important to understand the time/space complexity of the basic operations (CRUD) when studying any DS. In addition, it is great to dive into the advantages/disadvantages of specific implementations. For example, to implement a stack on Java, should we use [Stack or ArrayDeque](https://stackoverflow.com/questions/12524826/why-should-i-use-deque-over-stack)?
 
 **References**
-Time-wise, I took a short course "[Introduction to Data Structures & Algorithms in Java](https://www.udemy.com/course/introduction-to-data-structures-algorithms-in-java/#/%29)" on Udemy to grab all the useful ds in Java shortly. 
+Time-wise, I took a short course "[Introduction to Data Structures & Algorithms in Java](https://www.udemy.com/course/introduction-to-data-structures-algorithms-in-java/#/%29)" on Udemy to grab all the useful DS in Java shortly. 
 
 
 ### Coding challenges/Algorithms
@@ -78,10 +80,8 @@ Time-wise, I took a short course "[Introduction to Data Structures & Algorithms 
     - Easy collection
     - Medium collection
     - Company-specific collection
-- **AlgoExpert**: Although I did not try it yet, I have heard good recommendations for AlgoExper and I am also quite interested in some videos of TechLead guy
+- **AlgoExpert**: Although I did not try it yet, I have heard good recommendations for AlgoExper and I am also quite interested in the free video of its co-founder and the TechLead guy
     - [Top 10 Algorithms for the Coding Interview](https://www.youtube.com/watch?v=r1MXwyiGi_U)
-    - [What no one tells you about coding interviews (why leetcode doesn't work)](https://www.youtube.com/watch?v=LQFsEwcCO1E)
-    - [Mock Google interview (for Software Engineer job)](https://www.youtube.com/watch?v=IWvbPIYQPFM)
 - [**Grokking the Coding Interview: Patterns for Coding Questions**](https://www.educative.io/courses/grokking-the-coding-interview): I was getting into how this course categorized the solutions and its approach to solve complex problems by common patterns.
 
 **Mock test**
@@ -105,6 +105,6 @@ I did my best to familiarize myself with various system design paradigms/termino
 
 ***General questions/behavioral questions***
 - I called it general questions as it would vary depending on companies. Some companies focus mostly on leadership principles. The others would prefer to dive into engineering fundamentals deeply. However, the backbone of those questions is to let the interviewee demonstrate two skills: leadership and problem-solving skills. The more you can deep dive into the story, the better. Especially if your story is about a technical solution, you should have a clear reason why you did it that way, and if it was not a good solution, you should propose a better solution. Additionally, providing specific numbers or technologies that were used is a plus.
-- This is also a chance for interviewees to demonstrate their knowledge about software engineering through your stories, so I tried to refresh some basic concepts used in my technical stories, such as race condition, concurrency vs. parallelism, webRTC, etc.
+- This is also a chance for interviewees to demonstrate their knowledge about software engineering, so I tried to refresh some basic concepts used in my technical stories, such as race condition, concurrency vs. parallelism, webRTC, etc.
 
 All in all, the outcome can be positive or negative, which may depend on various aspects. If it was not good, do not panic, but try to learn from it. Have patience, respect and always strive to be a better version of yourself. Keep fighting, and good luck!
